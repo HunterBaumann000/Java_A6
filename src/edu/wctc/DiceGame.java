@@ -73,7 +73,7 @@ public class DiceGame {
 
     public int getCurrentPlayerScore() {
 
-        return players.get(1).getScore();
+        return players.get(i).getScore();
     }
 
     public String getDiceResults() {
@@ -85,8 +85,8 @@ public class DiceGame {
     }
 
     public String getFinalWinner(){
-        int finalWinner =
-                (int) Collections.max(getCurrentPlayerScore(), Comparator.comparingInt(Player::getScore));
+        String finalWinner =
+                Collections.max(players, Comparator.comparingInt(Player -> getCurrentPlayerScore())).toString();
 
         return "The winner is player " + finalWinner;
 
@@ -125,10 +125,8 @@ public class DiceGame {
     }
 
     public void playerHold(char dieNum){
-        dieNum = dice.stream()
-                .filter(isHoldingDie())
-                .findFirst(die -> dieNum)
-                .isPresent();
+        boolean playerHold = dice.stream()
+                .anyMatch(players -> isHoldingDie(dieNum));
     }
 
     public void resetDice(){
