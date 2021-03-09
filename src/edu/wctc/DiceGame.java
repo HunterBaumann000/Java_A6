@@ -1,5 +1,7 @@
 package edu.wctc;
 
+import jdk.internal.icu.text.UnicodeSet;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,11 +17,12 @@ public class DiceGame {
         List<Die> dice = this.dice;
         this.maxRolls = maxRolls;
 
-        for(int i = 0; i < countPlayers) {
+        for(int i = 0; i < countPlayers; countPlayers++) {
             countDice++;
             maxRolls++;
-            Player player = new Player();
-            Die die = new Die(6);
+
+            players.add(new Player());
+            dice.add(new Die(6));
         }
 
         try {
@@ -73,7 +76,7 @@ public class DiceGame {
 
     public int getCurrentPlayerScore() {
 
-        return players.get(i).getScore();
+        return players.get(this.player).getScore();
     }
 
     public String getDiceResults() {
@@ -127,10 +130,14 @@ public class DiceGame {
     public void playerHold(char dieNum){
         boolean playerHold = dice.stream()
                 .anyMatch(players -> isHoldingDie(dieNum));
+
+        if (playerHold){
+            autoHold(dieNum);
+        }
     }
 
     public void resetDice(){
-        diceReset = dice.stream()
+        resetDice = dice.stream()
                 .forEach(Die::resetDie);
 
         dice.clear();
@@ -146,6 +153,7 @@ public class DiceGame {
     public void rollDice(){
         roll = dice.stream()
                 .forEach(Die::rollDie);
+        //System.Out.PrintLn(roll)
     }
 
     public void scoreCurrentPlayer() {
@@ -156,6 +164,7 @@ public class DiceGame {
         {
           currentPlayers.setScore(getCurrentPlayerScore() + currentPlayers.getRollsUsed());
         }
+
     }
 
     public void startNewGame() {
