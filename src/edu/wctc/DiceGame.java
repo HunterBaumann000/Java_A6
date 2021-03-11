@@ -1,7 +1,5 @@
 package edu.wctc;
 
-import jdk.internal.icu.text.UnicodeSet;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
